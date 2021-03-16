@@ -1,0 +1,7 @@
+- hosts: server
+  roles:
+          - role: /root/role-task/webserver
+
+- hosts: loadbalancer
+  roles:
+          - role: /root/role-task/haproxy

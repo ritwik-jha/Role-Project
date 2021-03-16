@@ -1,0 +1,30 @@
+---
+# tasks file for haproxy
+- name: installing haproxy
+  package:
+          name: haproxy
+          state: present
+
+- name: stopping firewall
+  firewalld:
+          port: 5000/tcp
+          state: enabled
+  ignore_errors: yes
+
+- name: stopping selinux
+  selinux:
+          policy: targeted
+          state: permissive
+  ignore_errors: yes
+
+- name: copying haproxy config file
+  template:
+          src: /root/role-task/haproxy.cfg
+          dest: /etc/haproxy/haproxy.cfg
+
+- name: starting haproxy service
+  service:
+          name: haproxy
+          state: started
+
+

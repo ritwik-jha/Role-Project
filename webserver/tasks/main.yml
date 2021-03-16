@@ -1,0 +1,33 @@
+---
+# tasks file for webserver
+- name: installing httpd
+  package:
+          name: httpd
+          state: present
+
+- name: installing php
+  package:
+          name: php
+          state: present
+
+- name: disabling selinux
+  selinux:
+          policy: targeted
+          state: permissive
+  ignore_errors: yes
+
+- name: stopping firewall
+  firewalld:
+          port: 80/tcp
+          state: enabled
+  ignore_errors: yes
+
+- name: copying webpage file
+  template:
+          src: /root/role-task/index.php
+          dest: /var/www/html/index.php
+
+- name: starting the services
+  service:
+          name: httpd
+          state: restarted
